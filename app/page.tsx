@@ -1,19 +1,23 @@
 const assets = [
   { name: "現金", icon: "💵", amount: 260000 },
-  { name: "股票", icon: "📈", amount: 500000 },
-  { name: "ETF", icon: "📊", amount: 300000 },
-  { name: "房地產", icon: "🏠", amount: 17480000 },
+  { name: "股票", icon: "📈", amount: 6000000 },
+  { name: "基金", icon: "💹", amount: 1500000 },
+  { name: "房地產", icon: "🏠", amount: 18280000 },
+];
+
+const liabilities = [
+  { name: "房貸", icon: "🏦", amount: 14000000 },
 ];
 
 const assetTrend = [
-  { label: "本月", amount: 17800000 },
-  { label: "本季", amount: 18100000 },
-  { label: "本年", amount: 18540000 },
+  { label: "本月", amount: 26040000 },
+  { label: "本季", amount: 26040000 },
+  { label: "本年", amount: 26040000 },
 ];
 
 export default function Home() {
   const totalAssets = assets.reduce((sum, asset) => sum + asset.amount, 0);
-  const totalLiabilities = 16600000;
+  const totalLiabilities = liabilities.reduce((sum, item) => sum + item.amount, 0);
   const netWorth = totalAssets - totalLiabilities;
   const fireTarget = 15000000;
   const fireProgress = (netWorth / fireTarget) * 100;
@@ -89,7 +93,7 @@ export default function Home() {
 
             <div className="mt-6 space-y-4">
               <Row label="房地產市值" value={realEstate} />
-              <Row label="房貸與信貸" value={totalLiabilities} />
+              <Row label="房貸" value={totalLiabilities} />
               <Row label="房產淨值" value={propertyEquity} />
             </div>
           </section>
@@ -109,7 +113,10 @@ export default function Home() {
               const height = (item.amount / max) * 100;
 
               return (
-                <div key={item.label} className="flex flex-1 flex-col items-center gap-3">
+                <div
+                  key={item.label}
+                  className="flex flex-1 flex-col items-center gap-3"
+                >
                   <div className="flex h-36 w-full items-end rounded-2xl bg-zinc-900 p-2">
                     <div
                       className="w-full rounded-xl bg-zinc-300 transition-all duration-700"
@@ -164,6 +171,39 @@ export default function Home() {
                 </div>
               );
             })}
+          </div>
+        </section>
+
+        <section className="mt-5 rounded-[28px] border border-zinc-800 bg-zinc-950 p-6">
+          <h3 className="text-xl font-semibold tracking-tight">負債資訊</h3>
+
+          <div className="mt-5 space-y-4">
+            {liabilities.map((item) => (
+              <div key={item.name}>
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <span className="text-lg">{item.icon}</span>
+                    <span className="text-base text-zinc-200">
+                      {item.name}
+                    </span>
+                  </div>
+
+                  <div className="text-right">
+                    <div className="text-base font-medium text-red-300">
+                      -${item.amount.toLocaleString()}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-2 h-2 overflow-hidden rounded-full bg-zinc-800">
+                  <div className="h-full w-full rounded-full bg-red-300" />
+                </div>
+              </div>
+            ))}
+
+            <div className="border-t border-zinc-800 pt-4">
+              <Row label="負債合計" value={totalLiabilities} />
+            </div>
           </div>
         </section>
       </div>
